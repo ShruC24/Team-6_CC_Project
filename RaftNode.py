@@ -146,4 +146,46 @@ def leader_run_action(node):
     x1.start()
     x1.join()
 
+def leader_callback(node):
+    print('starting...')
+    node = threading.Thread(target=leader_run_action, args=(node,))
+    node.start()
+    
+def follower_run_action(node):
+    i = 0
+    
+    ip = node.ip
+    def ping():
+        print("called ping")
+        while not node.shutdown_flag:
+            time.sleep(2)
+            print("I am follower",node.state)
+            for peer in node.peers.values():
+                if(peer.state =='l'):
+                    # print("leader-address",peer.addr)
+                    url = 'http://127.0.1.1:'+str(int(peer.port)+1)
+                    data = b'follower alive'
 
+    x1 = threading.Thread(target=ping)
+    x1.start()
+
+def follower_callback(node):
+    print('starting...')
+    node = threading.Thread(target=follower_run_action, args=(node,))
+    node.start()
+
+
+node = raft.make_default_node()
+
+port = int(node.port)+1
+def start_server():
+    if get_server_running() == False:
+        app.run(debug=False,port=port,host='127.0.1.1')
+x4 = threading.Thread(target=start_server)
+x4.start()
+
+node.worker.handler['on_leader'] = leader_callback
+node.worker.handler['on_follower'] = follower_callback
+
+node.start()
+node.join()

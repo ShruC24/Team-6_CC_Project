@@ -102,3 +102,48 @@ def set_log_id():
         return 0
     else:
         return last_line[8]
+
+@app.route('/fromLeader', methods=['POST'])
+def get_data_leader():
+    print("recieved message from leader :",request.data.decode())
+    
+    for peer in node.peers.values():
+        if(peer.state =='l'):
+            url = 'http://127.0.1.1:'+str(int(peer.port)+1)+'/confirmation'
+            data = b'data recieved action'
+            # try:
+            r = requests.post(url=url, data=data)
+            id = set_log_id()
+            update_log_id(id)
+            log_id = int(get_current_log_id())+1
+            # print("data recieved ",request.data.decode(),int(request.data.decode()[0])," == ",log_id)
+            if int(request.data.decode()[0]) == log_id:
+                final_data = 'Log Id ('+str(log_id)+') : '+str(request.data.decode()[1:])
+                filename = 'log'+str(node.nid)+'.txt'
+                file = open(filename, "a")  # append mode
+                file.write(final_data)
+                file.close()
+                increament_current_log_id()
+            elif int(request.data.decode()[0]) > log_id:
+                print("request for more data")
+            else:
+                print("waiting for sync...")
+
+    return Response('We recieved something…')
+
+def leader_run_action(node):
+
+    def ping():
+        while not node.shutdown_flag:
+            time.sleep(2)
+            print("I am leader",node.state)
+            for peer in node.peers.values():
+                # print("peer-address",peer.addr)
+                url = 'http://127.0.1.1:'+str(int(peer.port)+1)
+                data = b'leader is alive'
+    
+    x1 = threading.Thread(target=ping)
+    x1.start()
+    x1.join()
+
+

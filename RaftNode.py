@@ -53,3 +53,52 @@ def increament_current_log_id():
     current_log_id = int(current_log_id)
     current_log_id += 1
     return current_log_id
+
+@app.route('/brokers', methods=['POST'])
+def get_data_brokers():
+    print("reciever data from client :",request.data.decode())
+    votes = set_votes()
+    set_current_log(str(request.data.decode()))
+    for peer in node.peers.values():
+        url = 'http://127.0.1.1:'+str(int(peer.port)+1)+'/fromLeader'
+        try:
+            log_id = int(get_current_log_id())+1
+            final_data = str(log_id)+request.data.decode()
+            final_data = bytes(final_data,'ascii')
+            r = requests.post(url=url, data=final_data)
+            print("leader",votes)
+            time.sleep(1)
+        except:
+            print("not able to forward message to follower",peer.nid)
+    
+    return Response('We recieved something…')
+@app.route('/confirmation',methods=['POST','GET'])
+def leader_confirm():
+    print("confirmation from followers :",request.data.decode())
+    no_of_nodes = 1 +len(node.peers)
+    print(no_of_nodes)
+    votes =increament_votes()
+    data = get_current_log()
+    if votes >no_of_nodes-1 :# count the no of nodes and make it generalized 
+        log_id = increament_current_log_id()
+        final_data = 'Log Id ('+str(log_id)+') : '+data
+        filename = 'log'+str(node.nid)+'.txt'
+        file = open(filename, "a")  # append mode
+        file.write(str(final_data))
+        file.close()
+        # print("commit action")
+    # print("confirmed action",request.data,"votes = ",votes)
+    return Response('We recieved something…')
+def set_log_id():
+    filename = 'log'+str(node.nid)+'.txt'
+    with open(filename, 'r') as file:
+        lines = file.read().splitlines()
+        try:
+            last_line = lines[-1]
+        except:
+            return 0
+        print (last_line)
+    if last_line == '':
+        return 0
+    else:
+        return last_line[8]

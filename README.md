@@ -32,7 +32,7 @@ commands to run on individual terminals
 4. streamlit run streamlit.py
    
 
-By:
+### By:
 - Shreya Joshi
 - Shruti C
 - Spoorthi Shivaprasad

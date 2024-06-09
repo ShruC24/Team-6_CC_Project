@@ -5,7 +5,7 @@
 - [Introduction](#introduction)
 - [Features](#features)
 - [Technologies Used](#technologies-used)
-
+- [Commands ](#commands-used)
 ## Introduction
 A task management web application using Python’s Streamlit that performs CRUD operations to a backend MySQL database through HTTP requests (GET, PUT and
 POST). This can be run on 3 nodes/terminals which communicate with each other and perform leader
@@ -23,7 +23,7 @@ election using the raft consensus algorithm.
 - MySQL
 - Frontend - Streamlit
 
-##Commands To Run
+## Commands To Run
 commands to run on induvial terminals
 1. python RaftNode.py -a 127.0.0.1:5010 -i 1 -e 2/127.0.0.1:5020,3/127.0.0.1:5030 
 2. python RaftNode.py -i 2 -a 127.0.0.1:5020 -e 1/127.0.0.1:5010,3/127.0.0.1:5030 

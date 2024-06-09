@@ -22,3 +22,11 @@ election using the raft consensus algorithm.
 - Python
 - MySQL
 - Frontend - Streamlit
+
+##Commands To Run
+On cmd
+python RaftNode.py -a 127.0.0.1:5010 -i 1 -e 2/127.0.0.1:5020,3/127.0.0.1:5030 
+python RaftNode.py -i 2 -a 127.0.0.1:5020 -e 1/127.0.0.1:5010,3/127.0.0.1:5030 
+python RaftNode.py -i 3 -a 127.0.0.1:5030 -e 1/127.0.0.1:5010,2/127.0.0.1:5020
+
+streamlit run streamlit.py

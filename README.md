@@ -33,7 +33,7 @@ commands to run on individual terminals
    
 
 By:
-Shreya Joshi
-Shruti C
-Spoorthi Shivaprasad
-Sragvi Anil Shetty
+- Shreya Joshi
+- Shruti C
+- Spoorthi Shivaprasad
+- Sragvi Anil Shetty

@@ -19,6 +19,6 @@ election using the raft consensus algorithm.
 4. This continues till a single candidate node is left. 
 
 ## Technologies Used
-Python
-MySQL
-Frontend - Streamlit
+- Python
+- MySQL
+- Frontend - Streamlit

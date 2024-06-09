@@ -31,3 +31,9 @@ commands to run on individual terminals
 
 4. streamlit run streamlit.py
    
+
+By:
+Shreya Joshi
+Shruti C
+Spoorthi Shivaprasad
+Sragvi Anil Shetty
